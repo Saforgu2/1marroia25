@@ -44,11 +44,12 @@ public class FlightBooking extends JFrame {
 	private JLabel jLabelResult = new JLabel();
 	private JLabel searchResult =   new JLabel();
 	
+	private JComboBox departCity;
 	private JTextField arrivalCity;
-	private JTextField departCity;
 	private JTextField day = null;
 	private JComboBox<String> months = null;
 	private DefaultComboBoxModel<String> monthNames = new DefaultComboBoxModel<String>();
+	private DefaultComboBoxModel departCityList = new DefaultComboBoxModel();
 
 	private JTextField year = null;
 	
@@ -89,6 +90,7 @@ public class FlightBooking extends JFrame {
 					FlightBooking frame = new FlightBooking();
 					frame.setBusinessLogic(new FlightManager());
 					frame.setVisible(true);
+					frame.departCityListInitialize();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -132,23 +134,17 @@ public class FlightBooking extends JFrame {
 		contentPane.add(arrivalCity);
 		arrivalCity.setColumns(10);
 		
-		departCity = new JTextField();
-		departCity.setText("Donostia");
-		departCity.setBounds(99, 6, 243, 26);
-		contentPane.add(departCity);
-		departCity.setColumns(10);
-		
 		
 		lblYear = new JLabel("Year:");
-		lblYear.setBounds(21, 62, 33, 16);
+		lblYear.setBounds(21, 77, 33, 16);
 		contentPane.add(lblYear);
 		
 		lblMonth = new JLabel("Month:");
-		lblMonth.setBounds(117, 62, 50, 16);
+		lblMonth.setBounds(117, 77, 50, 16);
 		contentPane.add(lblMonth);
 	    
 		months = new JComboBox<String>();
-		months.setBounds(163, 58, 116, 27);
+		months.setBounds(163, 73, 116, 27);
 		contentPane.add(months);
 		months.setModel(monthNames);
 		
@@ -167,12 +163,12 @@ public class FlightBooking extends JFrame {
 		months.setSelectedIndex(1);
 		
 		lblDay = new JLabel("Day:");
-		lblDay.setBounds(291, 62, 38, 16);
+		lblDay.setBounds(291, 77, 38, 16);
 		contentPane.add(lblDay);
 		
 		day = new JTextField();
 		day.setText("23");
-		day.setBounds(331, 57, 50, 26);
+		day.setBounds(331, 72, 50, 26);
 		contentPane.add(day);
 		day.setColumns(10);
 		
@@ -207,7 +203,7 @@ public class FlightBooking extends JFrame {
 				
 				java.util.Date date =newDate(Integer.parseInt(year.getText()),months.getSelectedIndex(),Integer.parseInt(day.getText()));
 				 
-				concreteFlightCollection=businessLogic.getConcreteFlights(departCity.getText(),arrivalCity.getText(),date);
+				concreteFlightCollection=businessLogic.getConcreteFlights(departCityList.getSelectedItem().toString(),arrivalCity.getText(),date);
 				Iterator<ConcreteFlight> flights=concreteFlightCollection.iterator();
 				while (flights.hasNext()) 
 					flightInfo.addElement(flights.next()); 
@@ -215,7 +211,7 @@ public class FlightBooking extends JFrame {
 				else searchResult.setText("Choose an available flight in this list:");
 			}
 		});
-		lookforFlights.setBounds(81, 90, 261, 40);
+		lookforFlights.setBounds(99, 105, 261, 40);
 		contentPane.add(lookforFlights);	
 		
 		jLabelResult = new JLabel("");
@@ -269,7 +265,7 @@ public class FlightBooking extends JFrame {
 
 		year = new JTextField();
 		year.setText("2026");
-		year.setBounds(57, 57, 50, 26);
+		year.setBounds(57, 72, 50, 26);
 		contentPane.add(year);
 		year.setColumns(10);
 		
@@ -278,5 +274,16 @@ public class FlightBooking extends JFrame {
 		
 		searchResult.setBounds(57, 130, 314, 16);
 		contentPane.add(searchResult);
+		
+		departCity = new JComboBox();
+		departCity.setBounds(99, 6, 243, 26);
+		contentPane.add(departCity);
+		departCity.setModel(departCityList);
+	}
+	
+	private void departCityListInitialize() {
+		for(String city : businessLogic.getAllDepartingCities()) {
+			departCityList.addElement(city);
+		}
 	}
 }  //  @jve:decl-index=0:visual-constraint="18,9"
