@@ -132,6 +132,5 @@ public class FlightManager implements FlightManagerInterface{
 		     calendar.set(Calendar.MILLISECOND, 0);
 
 		     return calendar.getTime();
-		}	
-		//Hola por dos
+		}
 }

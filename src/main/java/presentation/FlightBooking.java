@@ -45,11 +45,12 @@ public class FlightBooking extends JFrame {
 	private JLabel searchResult =   new JLabel();
 	
 	private JComboBox departCity;
-	private JTextField arrivalCity;
+	private JComboBox arrivalCity;
 	private JTextField day = null;
 	private JComboBox<String> months = null;
 	private DefaultComboBoxModel<String> monthNames = new DefaultComboBoxModel<String>();
 	private DefaultComboBoxModel departCityList = new DefaultComboBoxModel();
+	private DefaultComboBoxModel arrivalCityList = new DefaultComboBoxModel();
 
 	private JTextField year = null;
 	
@@ -128,12 +129,6 @@ public class FlightBooking extends JFrame {
 		lblDepartCity.setBounds(21, 11, 103, 16);
 		contentPane.add(lblDepartCity);
 		
-		arrivalCity = new JTextField();
-		arrivalCity.setText("Bilbo");
-		arrivalCity.setBounds(99, 34, 243, 26);
-		contentPane.add(arrivalCity);
-		arrivalCity.setColumns(10);
-		
 		
 		lblYear = new JLabel("Year:");
 		lblYear.setBounds(21, 77, 33, 16);
@@ -203,7 +198,7 @@ public class FlightBooking extends JFrame {
 				
 				java.util.Date date =newDate(Integer.parseInt(year.getText()),months.getSelectedIndex(),Integer.parseInt(day.getText()));
 				 
-				concreteFlightCollection=businessLogic.getConcreteFlights(departCityList.getSelectedItem().toString(),arrivalCity.getText(),date);
+				concreteFlightCollection=businessLogic.getConcreteFlights(departCityList.getSelectedItem().toString(),arrivalCity.getSelectedItem().toString(),date);
 				Iterator<ConcreteFlight> flights=concreteFlightCollection.iterator();
 				while (flights.hasNext()) 
 					flightInfo.addElement(flights.next()); 
@@ -279,6 +274,19 @@ public class FlightBooking extends JFrame {
 		departCity.setBounds(99, 6, 243, 26);
 		contentPane.add(departCity);
 		departCity.setModel(departCityList);
+		departCity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				arrivalCityList.removeAllElements();;
+				for(String city : businessLogic.getArrivalCitiesFrom(departCity.getSelectedItem().toString())) {
+					arrivalCityList.addElement(city);
+				}
+			}
+		});
+		
+		arrivalCity = new JComboBox();
+		arrivalCity.setBounds(99, 35, 243, 26);
+		contentPane.add(arrivalCity);
+		arrivalCity.setModel(arrivalCityList);
 	}
 	
 	private void departCityListInitialize() {
