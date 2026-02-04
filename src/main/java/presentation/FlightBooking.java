@@ -131,15 +131,15 @@ public class FlightBooking extends JFrame {
 		
 		
 		lblYear = new JLabel("Year:");
-		lblYear.setBounds(21, 77, 33, 16);
+		lblYear.setBounds(21, 71, 33, 16);
 		contentPane.add(lblYear);
 		
 		lblMonth = new JLabel("Month:");
-		lblMonth.setBounds(117, 77, 50, 16);
+		lblMonth.setBounds(117, 71, 50, 16);
 		contentPane.add(lblMonth);
 	    
 		months = new JComboBox<String>();
-		months.setBounds(163, 73, 116, 27);
+		months.setBounds(163, 67, 116, 27);
 		contentPane.add(months);
 		months.setModel(monthNames);
 		
@@ -158,12 +158,12 @@ public class FlightBooking extends JFrame {
 		months.setSelectedIndex(1);
 		
 		lblDay = new JLabel("Day:");
-		lblDay.setBounds(291, 77, 38, 16);
+		lblDay.setBounds(291, 71, 38, 16);
 		contentPane.add(lblDay);
 		
 		day = new JTextField();
 		day.setText("23");
-		day.setBounds(331, 72, 50, 26);
+		day.setBounds(331, 66, 50, 26);
 		contentPane.add(day);
 		day.setColumns(10);
 		
@@ -174,17 +174,19 @@ public class FlightBooking extends JFrame {
 		
 		
 		bussinesTicket = new JRadioButton("Business");
-		bussinesTicket.setSelected(true);
+		bussinesTicket.setEnabled(false);
 		fareButtonGroup.add(bussinesTicket);
 		bussinesTicket.setBounds(99, 238, 101, 23);
 		contentPane.add(bussinesTicket);
 		
 		firstTicket = new JRadioButton("First");
+		firstTicket.setEnabled(false);
 		fareButtonGroup.add(firstTicket);
 		firstTicket.setBounds(202, 238, 77, 23);
 		contentPane.add(firstTicket);
 		
 		touristTicket = new JRadioButton("Tourist");
+		touristTicket.setEnabled(false);
 		fareButtonGroup.add(touristTicket);
 		touristTicket.setBounds(278, 238, 77, 23);
 		contentPane.add(touristTicket);
@@ -206,7 +208,7 @@ public class FlightBooking extends JFrame {
 				else searchResult.setText("Choose an available flight in this list:");
 			}
 		});
-		lookforFlights.setBounds(99, 105, 261, 40);
+		lookforFlights.setBounds(99, 99, 261, 40);
 		contentPane.add(lookforFlights);	
 		
 		jLabelResult = new JLabel("");
@@ -222,9 +224,37 @@ public class FlightBooking extends JFrame {
 				if (!flightList.isSelectionEmpty()){  
 													 
 					selectedConcreteFlight = (ConcreteFlight) flightList.getSelectedValue();
-					bookFlight.setEnabled(true);
-					bookFlight.setText("Book: "+selectedConcreteFlight);  // TODO Auto-generated Event stub valueChanged()
+					bookFlight.setText("");
+					fareButtonGroup.clearSelection();
+					if(selectedConcreteFlight.getBussinesNumber() != 0) bussinesTicket.setEnabled(true);
+					else bussinesTicket.setEnabled(false);
+					
+					if(selectedConcreteFlight.getFirstNumber() != 0) firstTicket.setEnabled(true);
+					else firstTicket.setEnabled(false);
+					
+					if(selectedConcreteFlight.getTouristNumber() != 0) touristTicket.setEnabled(true);
+					else touristTicket.setEnabled(false);
 				}
+			}
+		});
+		
+		//JRadioButton enable/disable booFlight button
+		bussinesTicket.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bookFlight.setEnabled(true);
+				bookFlight.setText("Book: "+selectedConcreteFlight);
+			}
+		});
+		firstTicket.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bookFlight.setEnabled(true);
+				bookFlight.setText("Book: "+selectedConcreteFlight);
+			}
+		});
+		touristTicket.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bookFlight.setEnabled(true);
+				bookFlight.setText("Book: "+selectedConcreteFlight);
 			}
 		});
 		
@@ -234,6 +264,7 @@ public class FlightBooking extends JFrame {
 		
 		
 		bookFlight = new JButton("");
+		bookFlight.setEnabled(false);
 		bookFlight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int num=0;
@@ -251,8 +282,15 @@ public class FlightBooking extends JFrame {
 					if (num>0) selectedConcreteFlight.setTouristNumber(num-1); else error=true;
 				}
 				if (error) bookFlight.setText("Error: There were no seats available!");
-				else bookFlight.setText("Booked. #seat left: "+(num-1));
+				else {
+					bookFlight.setText("Booked. #seat left: "+(num-1));
+					bussinesTicket.setEnabled(false);
+					firstTicket.setEnabled(false);
+					touristTicket.setEnabled(false);
+					flightInfo.clear();
+				}
 				bookFlight.setEnabled(false);
+				fareButtonGroup.clearSelection();
 			}
 		});
 		bookFlight.setBounds(31, 273, 399, 40);
@@ -260,14 +298,14 @@ public class FlightBooking extends JFrame {
 
 		year = new JTextField();
 		year.setText("2026");
-		year.setBounds(57, 72, 50, 26);
+		year.setBounds(57, 66, 50, 26);
 		contentPane.add(year);
 		year.setColumns(10);
 		
 		lblArrivalCity.setBounds(21, 39, 84, 16);
 		contentPane.add(lblArrivalCity);
 		
-		searchResult.setBounds(57, 130, 314, 16);
+		searchResult.setBounds(67, 141, 314, 16);
 		contentPane.add(searchResult);
 		
 		departCity = new JComboBox();
