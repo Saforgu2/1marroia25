@@ -206,11 +206,11 @@ public class FlightBooking extends JFrame {
 				flightListModel.removeAllElements(); //This creates an event in the comboBox, calling the event listener and trying to get something from null
 				flightList.setEnabled(true);
 				try { // Using this try/catch to solve the 6) section
-					java.util.Date date =newDate(Integer.parseInt(year.getText()),months.getSelectedIndex(),Integer.parseInt(day.getText()));
-					concreteFlightCollection=businessLogic.getConcreteFlights(departCityList.getSelectedItem().toString(),arrivalCity.getSelectedItem().toString(),date);
-					Iterator<ConcreteFlight> flights=concreteFlightCollection.iterator();
+					Date date = newDate(Integer.parseInt(year.getText()),months.getSelectedIndex(),Integer.parseInt(day.getText()));
+					concreteFlightCollection = businessLogic.getConcreteFlights(departCityList.getSelectedItem().toString(),arrivalCity.getSelectedItem().toString(),date);
+					Iterator<ConcreteFlight> flights = concreteFlightCollection.iterator();
 					while (flights.hasNext()) 
-						flightListModel.addElement(flights.next()); 
+						flightListModel.addElement(flights.next());
 					if (concreteFlightCollection.isEmpty()) searchResult.setText("No flights in that city in that date");
 					else searchResult.setText("Choose an available flight in this list:");
 				} catch(NumberFormatException error) {
