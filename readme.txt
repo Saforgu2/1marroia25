@@ -16,3 +16,5 @@ BAI
 BAI
 - Lortu duzue seigarren arazoa konpontzea (BAI/EZ/PARTZIALKI)?.
 BAI
+-Zenbat ordu behar izan dituzue marroia konpontzeko (kide guztien batazbestekoa)?.
+2-3 Ordu behar izan ditugu.
